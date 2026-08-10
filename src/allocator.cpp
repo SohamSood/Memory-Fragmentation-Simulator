@@ -96,3 +96,11 @@ void MemoryAllocator::printHeap() {
                   << '\n';
     }
 }
+
+const Block* MemoryAllocator::getBlocks() const {
+    return blocks;
+}
+
+std::size_t MemoryAllocator::getBlockCount() const {
+    return blockCount;
+}

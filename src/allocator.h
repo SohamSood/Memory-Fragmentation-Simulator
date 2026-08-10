@@ -17,5 +17,7 @@ public:
     void* allocate(std::size_t size); //declare a function
     void deallocate(void* ptr); //again declare a function
     void printHeap(); //function to print the heap
+    const Block* getBlocks() const;
+    std::size_t getBlockCount() const;
 };
 #endif // ALLOCATR_H // free(ptr)

@@ -1,0 +1,146 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+    padding: 40px;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #6b7280;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.controls,
+.allocation-controls {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+
+    display: flex;
+    gap: 15px;
+    align-items: end;
+}
+
+.controls div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stats div {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.stats span {
+    display: block;
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.stats strong {
+    font-size: 22px;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+#memoryContainer {
+    display: flex;
+    width: 100%;
+    min-height: 120px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    gap: 3px;
+    overflow-x: auto;
+}
+
+.memory-block {
+    min-width: 70px;
+    height: 80px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.memory-block.free {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.memory-block.used {
+    background: #fecaca;
+    color: #991b1b;
+}
+
+.block-index {
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.block-size {
+    font-size: 12px;
+}

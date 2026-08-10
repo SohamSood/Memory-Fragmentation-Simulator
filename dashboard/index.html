@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Memory Allocator Simulator</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Memory Allocator Simulator</h1>
+        <p>Visualize how memory is allocated and deallocated.</p>
+    </header>
+
+    <main>
+
+        <section class="controls">
+
+            <div>
+                <label>Heap Size</label>
+                <input type="number" id="heapSize">
+            </div>
+
+            <div>
+                <label>Block Size</label>
+                <input type="number" id="blockSize">
+            </div>
+
+            <button id="initializeBtn">
+                Initialize Heap
+            </button>
+
+        </section>
+
+
+        <section class="allocation-controls">
+
+            <input
+                type="number"
+                id="allocationSize"
+                placeholder="Allocation size"
+            >
+
+            <button id="allocateBtn">
+                Allocate
+            </button>
+
+            <button id="deallocateBtn">
+                Deallocate
+            </button>
+
+        </section>
+
+
+        <section class="stats">
+
+            <div>
+                <span>Heap</span>
+                <strong id="heapDisplay">-</strong>
+            </div>
+
+            <div>
+                <span>Used</span>
+                <strong id="usedDisplay">-</strong>
+            </div>
+
+            <div>
+                <span>Free</span>
+                <strong id="freeDisplay">-</strong>
+            </div>
+
+            <div>
+                <span>Internal Fragmentation</span>
+                <strong id="fragmentationDisplay">-</strong>
+            </div>
+
+        </section>
+
+
+        <section>
+
+            <h2>Memory Layout</h2>
+
+            <div id="memoryContainer">
+                <!-- Blocks will be generated here -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
