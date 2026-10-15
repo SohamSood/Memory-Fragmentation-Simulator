@@ -1,5 +1,6 @@
 #include "allocator.h" //use memoryallocator class defined in allocator.h
 #include <iostream> //for printing the heap
+static int next_allocation_id = 1;
 MemoryAllocator::MemoryAllocator(std::size_t sizeOfHeap,std::size_t sizeOfBlock) {
     HeapSize = sizeOfHeap;
     BlockSize = sizeOfBlock;
@@ -17,9 +18,9 @@ MemoryAllocator::MemoryAllocator(std::size_t sizeOfHeap,std::size_t sizeOfBlock)
     }
 }
 
-void* MemoryAllocator::allocate(std::size_t size) { //actual implementation would be here
+int MemoryAllocator::allocate(std::size_t size) { //actual implementation would be here
     if(size == 0) {
-        return nullptr;
+        return -1;
     }
     std::size_t requiredBlocks = (size + BlockSize - 1) / BlockSize;
 
@@ -43,7 +44,7 @@ void* MemoryAllocator::allocate(std::size_t size) { //actual implementation woul
     if(found) {
         for(std::size_t i = startBlockIndex; i < startBlockIndex + requiredBlocks; i++) {
             blocks[i].free = false;
-            blocks[i].allocation_id = startBlockIndex; //assigning the allocation id to the starting block index
+            blocks[i].allocation_id = next_allocation_id; //assigning the allocation id to the starting block index
             if(i == startBlockIndex + requiredBlocks -1) {
                 if(size%BlockSize != 0) {
                     blocks[i].allocatedSize = size%BlockSize;
@@ -54,35 +55,24 @@ void* MemoryAllocator::allocate(std::size_t size) { //actual implementation woul
                 blocks[i].allocatedSize = BlockSize;
             }
         }
-         return static_cast<void*>(
-            heap + blocks[startBlockIndex].start
-        );
+        next_allocation_id++;
+        return next_allocation_id - 1;
     }
-
-    return nullptr;
+    return -1;
 }
 MemoryAllocator::~MemoryAllocator() {
     delete[] heap;
     delete[] blocks;
 }
-void MemoryAllocator::deallocate(void* ptr) {
+void MemoryAllocator::deallocate(int allocator_id) {
     // Placeholder implementation
-    if(ptr == nullptr) return;
-
-    //find offset from begining of heap
-    std::size_t offset = static_cast<char*>(ptr) - heap;
-
-    //find the first blockk 
-    std::size_t blockIndex = offset / BlockSize;
-
-    //allocationid
-    int id = blocks[blockIndex].allocation_id;
-
+    bool removed = false;
     for(std::size_t i = 0; i < blockCount; i++) {
-        if(blocks[i].allocation_id == id) {
+        if(blocks[i].allocation_id == allocator_id) {
             blocks[i].free = true;
             blocks[i].allocatedSize = 0;
             blocks[i].allocation_id = -1;
+            removed = true;
         }
     }
 }
@@ -92,6 +82,7 @@ void MemoryAllocator::printHeap() {
                   << " | Start: "<< blocks[i].start
                   << " | Size: " << blocks[i].size
                   << " | Used: " << blocks[i].allocatedSize
+                  << " | Allocation ID: " << blocks[i].allocation_id
                   << " | Free: " << blocks[i].free
                   << '\n';
     }

@@ -1,139 +1,162 @@
 # Memory Fragmentation Simulator
 
-A C++ implementation of a fixed-size heap memory allocator that demonstrates **dynamic memory allocation, deallocation, internal fragmentation, and external fragmentation**.
+A complete C-based project that simulates a fixed-size heap allocator and visualizes how memory becomes fragmented over time.
 
 ## Overview
 
-This project simulates how memory can be managed using a custom memory allocator instead of relying directly on the standard `malloc()`/`free()` functions.
+This project models a simplified memory allocator that divides a heap into fixed-size blocks. The simulator demonstrates:
 
-The allocator creates a fixed-size heap divided into fixed-size blocks. Blocks can then be allocated and released during program execution.
+- dynamic allocation and deallocation
+- first-fit allocation behavior
+- internal fragmentation
+- external fragmentation
+- heap-state visualization
+- allocation statistics
+
+The implementation is written in C and designed for learning memory management concepts in a simple, interactive way.
 
 ## Features
 
-* Fixed-size simulated heap
-* Fixed-size memory blocks
-* Custom memory allocation
-* Memory deallocation
-* Heap state visualization
-* Internal fragmentation demonstration
-* External fragmentation demonstration
-* Written in C++
+- Fixed-size heap simulation
+- Fixed-size memory blocks
+- Allocation by request size
+- Deallocation by allocation ID
+- Formation of free gaps between allocated regions
+- Stats for fragmentation and free space
+- Command-line simulator interface
+- Built and tested with GCC
 
-## How It Works
+## How the Simulator Works
 
-The simulated heap is divided into multiple blocks:
+The heap is divided into blocks of a defined size. When a program requests memory, the allocator searches for a contiguous run of free blocks large enough to satisfy the request.
 
-```text
-Heap
-+------+------+------+------+------+------+
-|  0   |  1   |  2   |  3   |  4   |  5   |
-+------+------+------+------+------+------+
-```
-
-When memory is requested, the allocator searches for available blocks and allocates them.
-
-For example:
+Example:
 
 ```text
-Request: 2 blocks
+Heap size: 256 bytes
+Block size: 32 bytes
+Total blocks: 8
 
-+------+------+------+------+------+------+
-| USED | USED | FREE | FREE | FREE | FREE |
-+------+------+------+------+------+------+
+[ALLOC][ALLOC][FREE][FREE][ALLOC][FREE][FREE][FREE]
 ```
 
-When allocated memory is released, the corresponding blocks become available again.
+If the request is larger than the remaining free space in one block, it spans multiple blocks.
 
-## Fragmentation
+## Internal vs External Fragmentation
 
 ### Internal Fragmentation
 
-Internal fragmentation occurs when allocated memory contains unused space because allocation happens in fixed-size blocks.
+This happens when a block is larger than the data actually needed. The remainder of the block is wasted.
 
-For example, if a block has a size of `64 bytes` but only `40 bytes` are required:
+Example:
 
 ```text
-+--------------------------------+
-|     40 bytes used | 24 unused |
-+--------------------------------+
+Request: 40 bytes
+Block size: 32 bytes
+Required blocks: 2
+Wasted space in the last block: 32 - 8 = 24 bytes
 ```
-
-The unused `24 bytes` represent internal fragmentation.
 
 ### External Fragmentation
 
-External fragmentation occurs when enough free memory exists overall, but it is divided into separate non-contiguous regions.
-
-```text
-+------+------+------+------+------+------+
-| USED | FREE | USED | FREE | USED | FREE |
-+------+------+------+------+------+------+
-```
-
-Although free blocks are available, a larger contiguous allocation may not be possible.
+This happens when free memory is separated into many small gaps. Even though enough total memory is free, a large contiguous region may not be available.
 
 ## Project Structure
 
 ```text
 Memory-Fragmentation-Simulator/
-│
+├── README.md
+├── Makefile
+├── .gitignore
 ├── src/
 │   ├── allocator.h
-│   ├── allocator.cpp
-│   └── main.cpp
-│
-├── .gitignore
-└── README.md
+│   ├── allocator.c
+│   ├── block.h
+│   └── main.c
+├── tests/
+│   └── test_allocator.c
+└── dashboard/
+    ├── index.html
+    ├── style.css
+    └── script.js
 ```
 
-## Compilation
+## Build and Run
 
-Using `g++`:
+Using GCC directly:
 
 ```bash
-g++ -Wall -Wextra -g3 src/main.cpp src/allocator.cpp -o main
+gcc -std=c11 -Wall -Wextra -Wpedantic -O2 -Isrc src/main.c src/allocator.c -o memory_simulator
+./memory_simulator
 ```
 
-Run:
-
-```bash
-./main
-```
-
-On Windows:
+On Windows PowerShell:
 
 ```powershell
-.\main.exe
+./build.ps1
+./memory_simulator.exe
 ```
 
-## Technologies
+Run the test suite:
 
-* C++
-* Object-Oriented Programming
-* Dynamic Memory Allocation
-* Memory Management
-* Data Structures
-* Systems Programming
+```bash
+gcc -std=c11 -Wall -Wextra -Wpedantic -O2 -Isrc tests/test_allocator.c src/allocator.c -o tests/test_allocator
+./tests/test_allocator
+```
+
+Or with PowerShell:
+
+```powershell
+./test.ps1
+```
+
+If GNU Make is available, the project also includes a standard Makefile:
+
+```bash
+make
+make test
+make clean
+```
+
+## Example Commands
+
+Once the simulator starts, use commands such as:
+
+```text
+memory-sim> allocate 40
+memory-sim> allocate 60
+memory-sim> show
+memory-sim> stats
+memory-sim> free 1
+memory-sim> quit
+```
+
+## Command Reference
+
+- allocate <size> : allocate a block of memory of the given size
+- free <id> : release memory by allocation ID
+- show : print the heap layout
+- stats : show total used/free bytes and fragmentation percentages
+- reset : recreate the allocator
+- help : display commands
+- quit : exit the simulator
 
 ## Concepts Demonstrated
 
-* Heap memory
-* Memory allocation
-* Memory deallocation
-* Fixed-size memory blocks
-* Internal fragmentation
-* External fragmentation
-* Pointers
-* Object-oriented programming
-* Low-level memory management
+- heap memory model
+- fixed-size partitions
+- allocation algorithms
+- fragmentation analysis
+- memory reuse and deallocation
+- C memory management practice
 
-## Future Improvements
+## Requirements
 
-* First-fit allocation
-* Best-fit allocation
-* Worst-fit allocation
-* Variable-size blocks
-* Memory compaction
-* Allocation statistics
-* Fragmentation percentage calculation
-* Interactive command-line interface
+- GCC or Clang
+- GNU Make
+- Linux/macOS/Windows with a C compiler
+
+## Notes
+
+This project focuses on understanding the behavior of fixed-size allocators rather than implementing a full OS-style allocator. It is intentionally simple and educational, making it a good starting point for systems programming and memory management studies.
+

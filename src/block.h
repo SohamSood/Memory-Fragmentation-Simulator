@@ -1,15 +1,16 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <cstddef>
+#include <stdbool.h>
+#include <stddef.h>
 
-struct Block{
-    std::size_t size;
-    std::size_t allocatedSize;
-    std::size_t start;
-    std::size_t BlockIndex;
+typedef struct {
+    size_t size;
+    size_t allocated_size;
+    size_t start;
+    size_t block_index;
     int allocation_id;
     bool free;
-};
+} Block;
 
 #endif

@@ -1,0 +1,12 @@
+# Build output
+memory_simulator
+*.exe
+*.out
+
+# Test binary
+/tests/test_allocator
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.vscode/
